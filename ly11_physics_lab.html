@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#09111f" />
+  <title>PHYSICS LAB — Dao động điều hòa | Vật lí 11</title>
+  <style>
+    :root{
+      --bg:#08111e; --panel:#101d30; --panel2:#13243a; --line:#263b55;
+      --text:#eef5ff; --muted:#9bb0ca; --cyan:#58e1f5; --lime:#d5ff75;
+      --violet:#b8a4ff; --orange:#ffb86a; --pink:#ff8db8; --shadow:0 18px 50px #0000002e;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:radial-gradient(ellipse at 80% -10%,#183553 0,transparent 38%),radial-gradient(ellipse at -10% 25%,#20193f 0,transparent 32%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    .wrap{width:min(1180px,calc(100% - 34px));margin:auto}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 0;border-bottom:1px solid #ffffff12}
+    .brand{display:flex;align-items:center;gap:12px;letter-spacing:.13em;font-size:.78rem;font-weight:850}
+    .brand-mark{width:42px;height:42px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#58e1f522,#b8a4ff22);border:1px solid #58e1f566;color:var(--cyan);font-size:1.3rem;box-shadow:0 0 28px #58e1f51b}
+    .top-pill{color:var(--lime);border:1px solid #d5ff7540;border-radius:999px;padding:7px 12px;font-size:.76rem;white-space:nowrap;background:#d5ff750a}
+    .hero{padding:46px 0 32px;display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:center}
+    .eyebrow{color:var(--cyan);font-size:.75rem;font-weight:850;letter-spacing:.2em;text-transform:uppercase;display:flex;align-items:center;gap:9px}
+    .eyebrow:before{content:"";width:24px;height:2px;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+    h1{font-size:clamp(2.25rem,5vw,4.65rem);line-height:1.03;letter-spacing:-.055em;margin:15px 0 18px;max-width:760px}
+    h1 span{color:var(--cyan)}
+    .hero p{color:var(--muted);font-size:1.04rem;max-width:630px;margin:0}
+    .hero-visual{min-height:198px;border-radius:24px;border:1px solid #58e1f52c;background:linear-gradient(135deg,#142840c9,#11172bc9);position:relative;overflow:hidden;padding:23px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+    .hero-visual:after{content:"";position:absolute;width:210px;height:210px;right:-50px;top:-75px;border:1px solid #58e1f533;border-radius:50%;box-shadow:0 0 0 22px #58e1f508,0 0 0 44px #58e1f506}
+    .hero-equation{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:750;letter-spacing:.01em;z-index:1}
+    .hero-equation small{display:block;color:var(--muted);font-size:.78rem;font-weight:500;margin-top:8px;letter-spacing:0}
+    .mini-stats{display:flex;gap:9px;flex-wrap:wrap;z-index:1}
+    .mini-stat{border:1px solid #ffffff15;background:#ffffff08;padding:7px 10px;border-radius:10px;font-size:.76rem;color:#c7d7eb}
+    .mini-stat strong{color:var(--lime)}
+    .section-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:20px 0 15px}
+    .section-heading h2{margin:0;font-size:1.35rem;letter-spacing:-.025em}
+    .section-heading p{margin:4px 0 0;color:var(--muted);font-size:.88rem}
+    .lab-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:17px;align-items:stretch}
+    .panel{border:1px solid #ffffff14;border-radius:22px;background:linear-gradient(150deg,#13243aee,#0d1929f5);box-shadow:var(--shadow);overflow:hidden;min-width:0}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;border-bottom:1px solid #ffffff12}
+    .panel-title{font-weight:800;display:flex;align-items:center;gap:10px}
+    .panel-title .dot{width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan)}
+    .panel-kicker{font-size:.72rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+    .circle-area{padding:12px 14px 0;position:relative}
+    #phasor{display:block;width:100%;max-height:380px;overflow:visible}
+    .circle-legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;padding:1px 0 16px;color:var(--muted);font-size:.76rem}
+    .legend-item{display:flex;align-items:center;gap:7px}
+    .legend-line{height:3px;width:18px;border-radius:8px;background:var(--cyan)}
+    .legend-line.lime{background:var(--lime)}.legend-line.violet{background:var(--violet)}
+    .controls{padding:18px 20px 20px;border-top:1px solid #ffffff12;background:#09152455}
+    .controls-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}
+    .control-label{font-size:.82rem;color:#cbd8e9;font-weight:700}
+    .control-value{font-variant-numeric:tabular-nums;color:var(--lime);font-size:.86rem;font-weight:800}
+    .control-row{margin:15px 0 19px}
+    input[type=range]{width:100%;accent-color:var(--cyan);cursor:pointer}
+    .range-ends{display:flex;justify-content:space-between;color:#7289a5;font-size:.7rem;margin-top:2px}
+    .control-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:8px}
+    .btn{border:1px solid #ffffff1c;border-radius:12px;padding:10px 14px;color:var(--text);background:#ffffff09;font-weight:750;font-size:.84rem;transition:transform .18s,border-color .18s,background .18s}
+    .btn:hover{transform:translateY(-1px);border-color:#58e1f57a}
+    .btn.primary{background:var(--cyan);color:#07121e;border-color:var(--cyan);box-shadow:0 8px 24px #58e1f51c}
+    .btn:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+    .time-controls{padding:16px 20px 19px;border-top:1px solid #ffffff12}
+    .time-readout{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+    .time-readout strong{color:var(--cyan);font-variant-numeric:tabular-nums}
+    .energy-panel{display:flex;flex-direction:column}
+    .energy-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:17px 17px 10px}
+    .energy-value{border:1px solid #ffffff13;background:#ffffff06;border-radius:14px;padding:12px 10px;min-width:0}
+    .energy-value .name{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted);white-space:nowrap}
+    .energy-value .swatch{width:7px;height:7px;border-radius:50%;flex:none;background:var(--pink)}
+    .energy-value:nth-child(2) .swatch{background:var(--violet)}.energy-value:nth-child(3) .swatch{background:var(--lime)}
+    .energy-value output{display:block;font-size:clamp(.9rem,2vw,1.15rem);font-weight:850;margin-top:6px;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+    .energy-value small{font-size:.68rem;color:#8197b3}
+    .graph-wrap{padding:2px 12px 0}
+    #energyGraph{display:block;width:100%;height:260px}
+    .graph-legend{display:flex;justify-content:center;gap:17px;flex-wrap:wrap;padding:0 10px 10px;color:var(--muted);font-size:.74rem}
+    .graph-note{margin:0 18px 17px;padding:11px 13px;background:#58e1f50b;border:1px solid #58e1f51c;border-radius:12px;color:#b8c9df;font-size:.77rem}
+    .live-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:15px}
+    .fact{padding:13px 14px;border:1px solid #ffffff13;border-radius:15px;background:#101e30a8}
+    .fact span{display:block;font-size:.72rem;color:var(--muted);margin-bottom:3px}
+    .fact strong{font-size:.95rem;color:var(--text);font-variant-numeric:tabular-nums}
+    .theory-intro{margin:38px 0 16px;display:flex;justify-content:space-between;align-items:end;gap:20px}
+    .theory-intro h2{margin:0;font-size:1.7rem;letter-spacing:-.04em}
+    .theory-intro p{margin:5px 0 0;color:var(--muted);max-width:660px;font-size:.9rem}
+    .theory-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+    .theory-card{padding:19px;border:1px solid #ffffff14;border-radius:18px;background:linear-gradient(150deg,#122239d9,#0d1929d9);min-width:0;position:relative;overflow:hidden}
+    .theory-card:before{content:"";position:absolute;top:0;left:0;width:48px;height:2px;background:var(--cyan)}
+    .theory-card:nth-child(3n+2):before{background:var(--violet)}.theory-card:nth-child(3n):before{background:var(--lime)}
+    .term-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .term-symbol{display:grid;place-items:center;min-width:40px;height:40px;padding:0 8px;border:1px solid #ffffff18;border-radius:12px;background:#ffffff08;color:var(--cyan);font-size:1.05rem;font-weight:850}
+    .theory-card h3{font-size:1rem;margin:0}
+    .theory-card p{font-size:.84rem;color:#b3c3d8;margin:8px 0 0}
+    .formula{padding:10px 11px;margin-top:12px;border-radius:10px;border:1px solid #ffffff10;background:#070f1c80;color:#eef6ff;font-family:"SFMono-Regular",Consolas,monospace;font-size:.83rem;overflow-wrap:anywhere}
+    .formula .accent{color:var(--lime)}
+    .callout{margin:20px 0 0;border:1px solid #d5ff7530;background:#d5ff7508;border-radius:18px;padding:17px 19px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+    .callout-icon{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#d5ff7513;color:var(--lime);font-size:1.1rem}
+    .callout strong{display:block;margin-bottom:4px}.callout p{margin:0;color:#b4c6db;font-size:.86rem}
+    footer{margin-top:42px;border-top:1px solid #ffffff12;padding:22px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:12px;color:#8196b1;font-size:.76rem}
+    footer strong{color:#c9d8e9}
+
+    .tap-hint{margin:0 0 14px;color:var(--muted);font-size:.88rem}
+    .theory-card{cursor:pointer;transition:transform .15s,border-color .15s}
+    .theory-card:hover{transform:translateY(-2px);border-color:#8bcbe8}
+    .theory-card summary{display:flex;align-items:center;gap:12px;list-style:none;cursor:pointer;font-size:1rem}
+    .theory-card summary::-webkit-details-marker{display:none}
+    .theory-card summary span:last-child{display:flex;flex-direction:column;gap:3px}
+    .theory-card summary small{font-size:.76rem;color:var(--muted);font-weight:500}
+    .theory-card summary:after{content:none}
+    .theory-card[open]{align-self:start}
+    .theory-card>p,.theory-card>.formula,.theory-card>.detail-extra{display:block}
+    .theory-card summary{min-height:44px}
+    .theory-card .detail-extra{overflow-wrap:anywhere}
+    .advanced-section{margin-top:22px;padding:22px;border:1px solid #dce5ef;border-radius:20px;background:#f7fbff;color:#183653}
+    .advanced-section h3{margin:4px 0 10px;font-size:1.2rem;color:#12365b}
+    .advanced-section p,.advanced-section li{color:#425c77;font-size:.92rem}
+    .advanced-section .insight-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+    .insight{background:white;border:1px solid #dce7f2;border-radius:14px;padding:15px}
+    .insight h4{margin:0 0 7px;color:#087eaa;font-size:1rem}
+    .insight p{margin:0 0 7px}
+    .insight .mini-formula{display:block;margin-top:8px;padding:9px 10px;border-radius:9px;background:#edf5fc;color:#173d61;font-family:Consolas,monospace;font-weight:700}
+    @media(max-width:620px){.advanced-section{padding:15px}.advanced-section .insight-grid{grid-template-columns:1fr}}
+
+    .theory-card{padding-right:19px}
+    .advanced-mini{position:absolute;right:48px;top:25px;z-index:2;border:1px solid #b8dff2;background:#edf8ff;color:#087eaa;border-radius:9px;padding:5px 8px;font-size:.72rem;font-weight:800;line-height:1.2;cursor:pointer;box-shadow:0 2px 6px #1836530a}
+    .advanced-mini:hover{background:#d9f0ff;border-color:#78c6e8}
+    .advanced-mini:focus-visible{outline:2px solid #087eaa;outline-offset:2px}
+    .advanced-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(9,24,42,.62);backdrop-filter:blur(5px)}
+    .advanced-modal.open{display:flex}
+    .advanced-dialog{width:min(720px,100%);max-height:min(82vh,850px);overflow:auto;background:#fff;color:#183653;border:1px solid #d6e5f2;border-radius:22px;box-shadow:0 24px 80px #06142655}
+    .advanced-dialog-head{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 20px;background:#f3f9ff;border-bottom:1px solid #dce8f3}
+    .advanced-dialog-head h3{margin:0;font-size:1.12rem;color:#12365b}
+    .advanced-close{border:1px solid #cbddeb;background:white;color:#31516f;border-radius:10px;width:36px;height:36px;font-size:1.25rem;cursor:pointer}
+    .advanced-dialog-body{padding:20px}
+    .advanced-dialog-body p,.advanced-dialog-body li{color:#425c77;line-height:1.7}
+    .advanced-dialog-body .insight{margin-bottom:12px;background:#fff;border:1px solid #dce7f2;border-radius:14px;padding:15px}
+    .advanced-dialog-body h4{margin:0 0 7px;color:#087eaa;font-size:1rem}
+    .advanced-dialog-body .mini-formula{display:block;margin-top:8px;padding:9px 10px;border-radius:9px;background:#edf5fc;color:#173d61;font-family:Consolas,monospace;font-weight:700;overflow-wrap:anywhere}
+    @media(max-width:620px){.advanced-mini{top:23px;right:43px;padding:5px 6px;font-size:.67rem}.advanced-dialog-body{padding:14px}.advanced-dialog-head{padding:14px 16px}}
+
+    .detail-extra{margin-top:12px;padding:12px;border-radius:11px;background:#eaf6ff;color:#304963;font-size:.83rem;line-height:1.7}
+    .energy-example{margin-top:8px!important;font-weight:600}
+    .quiz-section{margin-top:34px;padding:24px;border:1px solid #dce5ef;border-radius:20px;background:#fff;color:#183653}
+    .quiz-heading h2{margin:8px 0;font-size:1.65rem}.quiz-heading p{margin:0 0 18px;color:#526780}
+    .quiz-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+    .quiz-item{margin:0;min-width:0;border:1px solid #dce5ef;border-radius:14px;padding:15px;display:flex;flex-direction:column;gap:9px}
+    .quiz-item legend{font-weight:800;padding:0 4px;line-height:1.45}
+    .quiz-item label{font-size:.9rem;cursor:pointer}.quiz-item input{accent-color:#087eaa}
+    .quiz-item .explain{display:none;margin:5px 0 0;padding:10px;background:#edf8ee;border-radius:9px;color:#315c3b;font-size:.84rem}
+    .quiz-item.correct{border-color:#54a86a;background:#f7fff8}.quiz-item.wrong{border-color:#d76c75;background:#fff8f8}.quiz-item.checked .explain{display:block}
+    .quiz-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px}.quiz-actions strong{color:#087eaa}
+    @media(max-width:620px){.quiz-list{grid-template-columns:1fr}.quiz-section{padding:16px}}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:900px){.hero{grid-template-columns:1fr .8fr}.lab-grid{grid-template-columns:1fr}.theory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.energy-panel{min-height:0}}
+    @media(max-width:620px){.wrap{width:min(100% - 22px,1180px)}.topbar{padding:15px 0}.brand{font-size:.68rem;letter-spacing:.08em}.brand-mark{width:36px;height:36px}.top-pill{font-size:.68rem;padding:6px 9px}.hero{grid-template-columns:1fr;padding:32px 0 22px;gap:18px}.hero-visual{min-height:165px}h1{font-size:2.55rem}.section-heading{align-items:start;flex-direction:column}.panel-head{padding:15px 16px}.circle-area{padding:5px 5px 0}.controls,.time-controls{padding-left:16px;padding-right:16px}.energy-values{gap:6px;padding:12px 10px 8px}.energy-value{padding:10px 7px}.energy-value .name{font-size:.67rem;gap:4px}.energy-value output{font-size:.88rem}.live-facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.fact{padding:10px 8px}.fact span{font-size:.65rem}.fact strong{font-size:.78rem}.theory-intro{margin-top:29px}.theory-intro h2{font-size:1.45rem}.theory-grid{grid-template-columns:1fr}.theory-card{padding:16px}.callout{padding:14px}.graph-note{margin:0 12px 13px}footer{align-items:flex-start;flex-direction:column;gap:5px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+
+    /* Giao diện học sinh: sáng, rõ chữ, ít hiệu ứng gây rối */
+    :root{--bg:#f4f7fc;--panel:#ffffff;--panel2:#edf3fb;--line:#d9e3f0;--text:#172b46;--muted:#526780;--cyan:#087eaa;--lime:#477d24;--violet:#7653b5;--orange:#b86b12;--pink:#c34678;--shadow:0 8px 24px #19395b12}
+    body{background:linear-gradient(180deg,#eaf4ff 0,#f7f8fc 360px,#f4f7fc 100%);color:var(--text)}
+    .topbar{border-bottom:1px solid #d6e1ee}
+    .brand-mark{background:#dcefff;border:1px solid #b8d8f4;color:#086f9b;box-shadow:none}
+    .top-pill{color:#235b80;border:1px solid #b9d7ed;background:#e7f4ff}
+    .hero{padding-top:34px;padding-bottom:22px}
+    .eyebrow{color:#087eaa}
+    .eyebrow:before{background:#087eaa;box-shadow:none}
+    h1 span{color:#087eaa}
+    .hero p,.section-heading p,.theory-intro p{color:#526780}
+    .hero-visual{background:linear-gradient(135deg,#e4f2ff,#f0eaff);border:1px solid #cbdff1;box-shadow:none}
+    .hero-visual:after{border-color:#6c9bc333;box-shadow:0 0 0 22px #6c9bc30b,0 0 0 44px #6c9bc308}
+    .mini-stat{border:1px solid #cbdbea;background:#ffffffb8;color:#334b65}
+    .mini-stat strong{color:#477d24}
+    .panel,.theory-card{background:#fff;border:1px solid #dce5ef;box-shadow:0 7px 22px #19395b0c}
+    .panel-head{border-bottom:1px solid #e4ebf3}
+    .panel-kicker{color:#61758d}
+    .controls{background:#f6f9fd;border-top:1px solid #e4ebf3}
+    .control-label{color:#304963}
+    .control-value{color:#477d24}
+    .range-ends{color:#71849a}
+    .btn{border:1px solid #d4e0ed;color:#243e59;background:#f3f7fc}
+    .btn:hover{border-color:#70b5d5;background:#edf7fc}
+    .btn.primary{background:#087eaa;color:white;border-color:#087eaa;box-shadow:none}
+    .time-controls{border-top:1px solid #e4ebf3}
+    .time-readout strong{color:#087eaa}
+    input[type=range]{accent-color:#087eaa}
+    .energy-value{border:1px solid #e0e8f1;background:#f8fafd}
+    .energy-value .name{color:#526780}
+    .energy-value small{color:#61758d}
+    .fact{border:1px solid #dce5ef;background:#f7faff}
+    .fact span{color:#526780}
+    .theory-card p{color:#526780}
+    .theory-card summary small{color:#61758d}
+    .detail-extra{background:#edf6ff;color:#304963}
+    .term-symbol{border:1px solid #d7e4f1;background:#edf6ff;color:#087eaa}
+    .formula{border:1px solid #dce6f0;background:#f3f7fc;color:#203852}
+    .formula .accent{color:#477d24}
+    .callout{border:1px solid #cfe4bc;background:#f4faee}
+    .callout-icon{background:#e4f2d7;color:#477d24}
+    .callout p{color:#40596f}
+    .graph-note{background:#edf8fc;border:1px solid #cde9f2;color:#35546b}
+    table{background:#fff}
+    th{background:#eaf3fc;color:#234967}
+    footer{border-top:1px solid #d6e1ee;color:#61758d}
+    footer strong{color:#234967}
+    .creator-tag{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:1px solid #c9dff0;border-radius:999px;background:#fff;color:#235b80;font-size:.82rem;font-weight:800;white-space:nowrap}
+    @media(max-width:620px){.creator-tag{font-size:.74rem;padding:6px 9px}.topbar{flex-wrap:wrap}.hero{padding-top:25px}h1{font-size:2.35rem}}
+
+    /* Bảo Trâm C1 — pastel pink / gingham edition */
+    :root{--bg:#fff5fa;--panel:#fffafd;--panel2:#fff0f7;--line:#f2cadd;--text:#542d47;--muted:#9a7188;--cyan:#d94f91;--lime:#f3a6c8;--violet:#b78bd4;--orange:#ffb7ce;--pink:#ec78ae;--shadow:0 12px 32px #d875a51a}
+    body{background-color:#fff7fb;background-image:linear-gradient(90deg,#f7dce9 1px,transparent 1px),linear-gradient(#f7dce9 1px,transparent 1px),linear-gradient(90deg,#fff 50%,transparent 50%),linear-gradient(#fff 50%,transparent 50%);background-size:28px 28px,28px 28px,56px 56px,56px 56px;background-position:0 0,0 0,0 0,0 0;color:#542d47}
+    body:before{content:"";display:none}
+    .wrap{position:relative;z-index:1}
+    .hero{position:relative}
+    .hero:after{content:"🎀";position:absolute;right:4px;top:-20px;font-size:clamp(4.5rem,9vw,7.5rem);line-height:1;transform:rotate(9deg);filter:drop-shadow(0 8px 8px #d875a544);pointer-events:none;z-index:0}
+    .hero>div{position:relative;z-index:1}.hero-visual{margin-top:34px}
+    .theory-card summary{padding-right:112px;min-height:44px}
+    .advanced-mini{z-index:3}
+    .motion-guide{margin:22px 0;padding:22px;border:1px solid #f0cadd;border-radius:22px;background:#fffafd;box-shadow:0 8px 24px #bd5d8e12}
+    .motion-guide h3{margin:5px 0 8px;font-size:1.35rem;color:#a83b70}.motion-guide-intro{color:#85516d;margin:0 0 18px}
+    .motion-axis{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:20px 0 35px;text-align:center}
+    .axis-line{position:absolute;left:8%;right:8%;top:35px;height:4px;background:#e77bab;border-radius:9px}.axis-line:after{content:"▶";position:absolute;right:-9px;top:-10px;color:#c43f82;font-size:20px}
+    .axis-point{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:.86rem;color:#75445f}.axis-point b{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#ffe4f0;border:2px solid #d94f91;color:#a83b70}.axis-point small{font-weight:800;color:#a83b70}.axis-point span{font-size:.78rem}.axis-point.center b{background:#f0e7ff;border-color:#b78bd4;color:#7750a2}.axis-arrow{position:absolute;right:0;bottom:8px;font-size:.8rem;color:#a83b70;font-weight:800}
+    .motion-rules{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.motion-rules>div{padding:13px;border:1px solid #f2cadd;border-radius:14px;background:#fff3f8}.motion-rules b{color:#a83b70}.motion-rules p{font-size:.85rem;color:#75445f;margin:6px 0 0}
+    @media(max-width:620px){.hero:after{top:-14px;right:0;font-size:4.5rem}.hero>div:first-child{padding-right:45px}.hero-visual{margin-top:10px}.theory-card summary{padding-right:0;padding-top:36px}.advanced-mini{top:10px!important;right:12px!important}.motion-guide{padding:15px}.motion-rules{grid-template-columns:repeat(2,minmax(0,1fr))}.axis-point span{font-size:.68rem}}
+    .topbar{border-bottom:2px dashed #efb9d2}
+    .brand-mark{background:#ffe4f0;border:1px solid #f1b6d1;color:#c43f82;box-shadow:0 4px 0 #f8d1e2}
+    .top-pill{color:#a83b70;border:1px solid #f0b7d1;background:#fff0f7}
+    .eyebrow{color:#c43f82}.eyebrow:before{background:#e77bab;box-shadow:none}
+    h1 span{color:#c43f82}
+    .hero-visual{background:linear-gradient(135deg,#ffe4f0,#fff2f8);border:1px solid #f1bfd6;box-shadow:0 10px 25px #d875a51a}
+    .hero-visual:after{border-color:#e78bb633;box-shadow:0 0 0 22px #e78bb60b,0 0 0 44px #e78bb608}
+    .mini-stat{border:1px solid #f0c9dc;background:#ffffffc9;color:#70435d}.mini-stat strong{color:#bd4e83}
+    .panel,.theory-card{background:#fffafd;border:1px solid #f0cadd;box-shadow:0 8px 24px #bd5d8e12}
+    .panel-head{border-bottom:1px solid #f5dce8}.panel-title .dot{background:#e77bab;box-shadow:0 0 12px #e77bab66}
+    .controls{background:#fff4f9;border-top:1px solid #f5dce8}.control-label{color:#75445f}.control-value{color:#bd4e83}
+    .btn{border:1px solid #efc3d8;color:#75445f;background:#fff7fb}.btn:hover{border-color:#df80ad;background:#ffedf5}.btn.primary{background:#d94f91;color:white;border-color:#d94f91}
+    .time-readout strong{color:#c43f82}input[type=range]{accent-color:#d94f91}
+    .energy-value{border:1px solid #f0cadd;background:#fff7fb}.energy-value .name{color:#85516d}.energy-value small{color:#9a7188}
+    .fact{border:1px solid #f0cadd;background:#fff7fb}.fact span{color:#85516d}
+    .theory-card:before{background:#e77bab}.theory-card:nth-child(3n+2):before{background:#b78bd4}.theory-card:nth-child(3n):before{background:#f3a6c8}
+    .theory-card p{color:#85516d}.theory-card summary small{color:#9a7188}.theory-card summary{list-style:none}.theory-card summary::marker,.theory-card summary::-webkit-details-marker{display:none;content:""}
+    .detail-extra{background:#fff0f7;color:#75445f;border:1px solid #f6d5e4}.term-symbol{border:1px solid #f0cadd;background:#ffedf5;color:#c43f82}
+    .formula{border:1px solid #f0cadd;background:#fff4f9;color:#65344f}.formula .accent{color:#bd4e83}
+    .callout{border:1px solid #f0cadd;background:#fff1f7}.callout-icon{background:#ffe0ed;color:#c43f82}.callout p{color:#75445f}
+    .graph-note{background:#fff0f7;border:1px solid #f0cadd;color:#75445f}
+    table{background:#fffafd}th{background:#ffedf5;color:#75445f}footer{border-top:2px dashed #efb9d2;color:#9a7188}footer strong{color:#a83b70}
+    .creator-tag{border:1px solid #f0b7d1;background:#fff0f7;color:#a83b70}
+    .advanced-mini{right:19px;top:18px;border:1px solid #efb6d0;background:#fff0f7;color:#b83f7c;border-radius:999px;padding:6px 10px;box-shadow:0 3px 0 #f9d5e5}
+    .advanced-mini:hover{background:#ffe1ee;border-color:#df80ad}
+    .advanced-mini:focus-visible{outline:2px solid #c43f82}
+    .advanced-dialog{border:1px solid #efbfd5;box-shadow:0 24px 80px #87385d44;border-radius:24px}
+    .advanced-dialog-head{background:#fff0f7;border-bottom:1px solid #f2cadd}.advanced-dialog-head h3{color:#a83b70}
+    .advanced-close{border:1px solid #efbfd5;background:#fffafd;color:#a83b70;border-radius:50%}
+    .advanced-dialog-body .insight{background:#fffafd;border:1px solid #f2cadd}.advanced-dialog-body h4{color:#c43f82}.advanced-dialog-body .mini-formula{background:#fff0f7;color:#75445f}
+    .tap-hint{color:#85516d;background:#fff0f7;border:1px dashed #e9a8c7;border-radius:14px;padding:10px 14px}
+    @media(max-width:620px){body:before{top:92px;right:10px;font-size:5rem;opacity:.72}.advanced-mini{top:18px;right:14px;padding:5px 8px;font-size:.68rem}}
+
+  </style>
+</head>
+<body>
+  <header class="wrap topbar">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">ϟ</div><div>PHYSICS LAB <span style="color:var(--muted);font-weight:600">/ VẬT LÍ 11</span></div></div>
+    <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end"><div class="top-pill">CHUYÊN ĐỀ · DAO ĐỘNG ĐIỀU HÒA</div><div class="creator-tag">✦ Bảo Trâm · C1</div></div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Mô phỏng tương tác</div>
+        <h1>Vật lí 11<br><span>Dao động điều hòa</span></h1>
+        <p>Quan sát đường tròn pha và sự chuyển hóa giữa động năng, thế năng trong dao động điều hòa.</p>
+      </div>
+      <div class="hero-visual">
+        <div class="panel-kicker">Phương trình dao động</div>
+        <div class="hero-equation">x = A cos(ωt + φ<sub>0</sub>)<small>Li độ là hình chiếu của vectơ quay lên trục dao động.</small></div>
+        <div class="mini-stats"><div class="mini-stat">Động năng <strong>W<sub>đ</sub></strong></div><div class="mini-stat">Thế năng <strong>W<sub>t</sub></strong></div><div class="mini-stat">Cơ năng <strong>W = hằng số</strong></div></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="labTitle">
+      <div class="section-heading">
+        <div><h2 id="labTitle">Mô phỏng dao động</h2><p>Dùng các nút bên dưới để điều khiển chuyển động và theo dõi số liệu.</p></div>
+      </div>
+      <div class="lab-grid">
+        <article class="panel">
+          <div class="panel-head"><div class="panel-title"><span class="dot"></span> Đường tròn lượng giác</div><span class="panel-kicker">Pha đang quay</span></div>
+          <div class="circle-area">
+            <svg id="phasor" viewBox="0 0 420 340" role="img" aria-label="Đường tròn pha, vectơ quay và hình chiếu biểu diễn li độ">
+              <defs>
+                <linearGradient id="circleGlow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#58e1f5" stop-opacity=".18"/><stop offset="1" stop-color="#b8a4ff" stop-opacity=".04"/></linearGradient>
+                <filter id="softGlow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                <marker id="arrowHead" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#58e1f5"/></marker>
+              </defs>
+              <g opacity=".28" stroke="#4e6b8d" stroke-width=".65">
+                <path d="M20 50H400 M20 90H400 M20 130H400 M20 170H400 M20 210H400 M20 250H400 M20 290H400"/>
+                <path d="M60 25V315 M100 25V315 M140 25V315 M180 25V315 M220 25V315 M260 25V315 M300 25V315 M340 25V315 M380 25V315"/>
+              </g>
+              <circle cx="210" cy="170" r="112" fill="url(#circleGlow)" stroke="#50708d" stroke-width="1.4" stroke-dasharray="4 5"/>
+              <line x1="35" y1="170" x2="390" y2="170" stroke="#a4b6cc" stroke-opacity=".7" stroke-width="1.3"/>
+              <path d="M384 165 L393 170 L384 175" fill="none" stroke="#a4b6cc" stroke-width="1.3"/>
+              <text x="380" y="157" font-size="11" fill="#b9cbe0">Trục x</text>
+              <line x1="210" y1="32" x2="210" y2="308" stroke="#a4b6cc" stroke-opacity=".26" stroke-dasharray="3 5"/>
+              <text x="222" y="43" font-size="11" fill="#8da5bf">+A</text><text x="222" y="303" font-size="11" fill="#8da5bf">−A</text>
+              <text x="224" y="188" font-size="10" fill="#9bb0ca">O</text>
+              <path id="phaseArc" d="" fill="none" stroke="#b8a4ff" stroke-width="2.2" stroke-linecap="round"/>
+              <line id="radiusVector" x1="210" y1="170" x2="322" y2="170" stroke="#58e1f5" stroke-width="3" marker-end="url(#arrowHead)" filter="url(#softGlow)"/>
+              <line id="projectionGuide" x1="322" y1="170" x2="322" y2="170" stroke="#d5ff75" stroke-width="1.8" stroke-dasharray="4 4"/>
+              <line id="positionGuide" x1="210" y1="170" x2="322" y2="170" stroke="#d5ff75" stroke-width="2.5" stroke-linecap="round"/>
+              <circle id="rotatingPoint" cx="322" cy="170" r="6.5" fill="#58e1f5" stroke="#e8fdff" stroke-width="1.5" filter="url(#softGlow)"/>
+              <circle id="projectionPoint" cx="322" cy="170" r="4.8" fill="#d5ff75" stroke="#f5ffd8" stroke-width="1.3"/>
+              <circle cx="210" cy="170" r="3" fill="#eef5ff"/>
+              <text id="phaseLabel" x="250" y="123" font-size="12" font-weight="700" fill="#d0c5ff">φ = 0°</text>
+              <text id="xLabel" x="268" y="194" font-size="12" font-weight="800" fill="#d5ff75">x = A</text>
+              <text x="22" y="25" font-size="10" fill="#8199b5" letter-spacing="1">VECTƠ QUAY</text>
+              <text x="22" y="325" font-size="10" fill="#8199b5">Hình chiếu trên trục x → li độ tức thời</text>
+            </svg>
+            <div class="circle-legend"><span class="legend-item"><i class="legend-line"></i> Vectơ quay A</span><span class="legend-item"><i class="legend-line lime"></i> Li độ x</span><span class="legend-item"><i class="legend-line violet"></i> Pha φ</span></div>
+          </div>
+          <div class="controls">
+            <div class="controls-top"><span class="control-label">Biên độ A</span><output class="control-value" id="ampOut">8,0 cm</output></div>
+            <div class="control-row"><label class="sr-only" for="amp">Biên độ A tính bằng centimet</label><input id="amp" type="range" min="2" max="12" step="0.5" value="8"><div class="range-ends"><span>2 cm</span><span>12 cm</span></div></div>
+            <div class="controls-top"><label class="control-label" for="omega">Tần số góc ω</label><output class="control-value" id="omegaOut" for="omega">4,0 rad/s</output></div>
+            <div class="control-row"><input id="omega" type="range" min="1" max="10" step="0.5" value="4"><div class="range-ends"><span>1 rad/s</span><span>10 rad/s</span></div></div>
+            <div class="controls-top"><label class="control-label" for="phase0">Pha ban đầu φ₀</label><output class="control-value" id="phase0Out" for="phase0">0°</output></div>
+            <div class="control-row"><input id="phase0" type="range" min="-180" max="180" step="15" value="0"><div class="range-ends"><span>−180°</span><span>+180°</span></div></div>
+            <div class="control-actions"><button class="btn primary" id="playBtn" type="button">▶ Chạy mô phỏng</button><button class="btn" id="resetBtn" type="button">↺ Đặt lại</button><button class="btn" id="stepBtn" type="button">＋ Tiến ¼ chu kì</button></div>
+          </div>
+          <div class="time-controls">
+            <div class="time-readout"><label class="control-label" for="time">Thời gian t</label><strong id="timeOut">0,000 s</strong></div>
+            <input id="time" type="range" min="0" max="6.283" step="0.001" value="0" aria-label="Điều chỉnh thời gian dao động"><div class="range-ends"><span>0 s</span><span id="timeMax">6,283 s · 1 chu kì</span></div>
+          </div>
+        </article>
+
+        <article class="panel energy-panel">
+          <div class="panel-head"><div class="panel-title"><span class="dot" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></span> Đồ thị năng lượng</div></div>
+          <div class="energy-values">
+            <div class="energy-value"><div class="name"><i class="swatch"></i>W<sub>đ</sub></div><output id="kineticOut">0,0000 J</output><small>Động năng</small></div>
+            <div class="energy-value"><div class="name"><i class="swatch"></i>W<sub>t</sub></div><output id="potentialOut">0,0000 J</output><small>Thế năng</small></div>
+            <div class="energy-value"><div class="name"><i class="swatch"></i>W</div><output id="totalOut">0,0000 J</output><small>Cơ năng</small></div>
+          </div>
+          <div class="graph-wrap"><canvas id="energyGraph" aria-label="Đồ thị động năng, thế năng và cơ năng theo thời gian"></canvas></div>
+          <div class="graph-legend"><span class="legend-item"><i class="legend-line" style="background:var(--pink)"></i> Động năng Wđ</span><span class="legend-item"><i class="legend-line violet" style="background:var(--violet)"></i> Thế năng Wt</span><span class="legend-item"><i class="legend-line lime" style="background:var(--lime)"></i> Cơ năng W</span></div>
+          <p class="graph-note">🔎 <strong>Quan sát:</strong> W<sub>đ</sub> và W<sub>t</sub> chuyển hóa qua lại, nhưng tổng cơ năng W không đổi nếu bỏ qua ma sát và lực cản.</p>
+          <div style="padding:0 17px 17px">
+            <div class="live-facts">
+              <div class="fact"><span>Li độ x</span><strong id="xOut">+8,00 cm</strong></div>
+              <div class="fact"><span>Pha φ</span><strong id="phaseOut">0,00 rad</strong></div>
+              <div class="fact"><span>Vận tốc v</span><strong id="velocityOut">0,000 m/s</strong></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="theoryTitle">
+      <div class="theory-intro"><div><div class="eyebrow">Ghi nhớ kiến thức</div><h2 id="theoryTitle">2. LÝ THUYẾT CẦN NHỚ</h2><p>Các đại lượng trong dao động điều hòa — định nghĩa, đơn vị và mối liên hệ cần nhớ khi làm bài tập.</p></div></div>
+      <p class="tap-hint">Kiến thức, công thức, đơn vị và lưu ý được hiển thị ngay bên dưới mỗi đại lượng. Bấm “✦ Nâng cao” để mở phần kiến thức mở rộng.</p>
+      <div class="theory-grid">
+        <details class="theory-card" open><summary><span class="term-symbol">A</span><span><b>Biên độ</b><small>Độ lệch lớn nhất</small></span></summary><p>Biên độ cho biết vật lệch xa vị trí cân bằng tối đa bao nhiêu. A luôn dương hoặc bằng 0.</p><div class="formula">A = |x| lớn nhất</div><div class="detail-extra"><b>Đơn vị:</b> m (SI), thường gặp cm.<br><b>Lưu ý:</b> đổi cm sang m trước khi tính năng lượng theo J. Ví dụ 8 cm = 0,08 m.</div></details>
+        <details class="theory-card" open><summary><span class="term-symbol">x</span><span><b>Li độ</b><small>Vị trí so với cân bằng</small></span></summary><p>Li độ có dấu: x dương và âm nằm ở hai phía khác nhau của vị trí cân bằng.</p><div class="formula">x = A cos(ωt + φ₀)</div><div class="detail-extra"><b>Đơn vị:</b> m.<br><b>Lưu ý:</b> −A ≤ x ≤ A. Li độ không phải quãng đường vật đã đi.</div></details>
+        <details class="theory-card" open><summary><span class="term-symbol">φ</span><span><b>Pha dao động</b><small>Trạng thái tại thời điểm t</small></span></summary><p>Pha xác định trạng thái dao động ở thời điểm đang xét.</p><div class="formula">φ = ωt + φ₀</div><div class="detail-extra"><b>Đơn vị:</b> radian (rad).<br><b>Lưu ý:</b> pha là góc, không phải độ dài. Khi dùng công thức, máy tính cần ở chế độ radian nếu nhập góc theo rad.</div></details>
+        <details class="theory-card" open><summary><span class="term-symbol">φ₀</span><span><b>Pha ban đầu</b><small>Pha tại t = 0</small></span></summary><p>Pha ban đầu cho biết vật bắt đầu dao động ở trạng thái nào.</p><div class="formula">x₀ = A cos φ₀</div><div class="detail-extra"><b>Đơn vị:</b> rad.<br><b>Lưu ý:</b> nếu x₀ = A thì cos φ₀ = 1; vật bắt đầu ở biên dương.</div></details>
+        <details class="theory-card" open><summary><span class="term-symbol">t</span><span><b>Thời gian</b><small>Thời điểm đang xét</small></span></summary><p>t được tính từ mốc thời gian chọn làm lúc bắt đầu khảo sát.</p><div class="formula">φ = ωt + φ₀</div><div class="detail-extra"><b>Đơn vị:</b> giây (s).<br><b>Lưu ý:</b> trong công thức, ω tính bằng rad/s và t tính bằng giây để đơn vị nhất quán.</div></details>
+        <details class="theory-card" open><summary><span class="term-symbol">ω</span><span><b>Tần số góc</b><small>Đọc là “ô mê ga”</small></span></summary><p>ω càng lớn thì pha thay đổi càng nhanh và vật dao động càng nhanh.</p><div class="formula">ω = 2π/T = 2πf</div><div class="detail-extra"><b>Đơn vị:</b> rad/s.<br><b>Lưu ý:</b> ω không phải tần số f. Chúng liên hệ với nhau qua ω = 2πf.</div></details>
+        <details class="theory-card" open><summary><span class="term-symbol">T</span><span><b>Chu kì</b><small>Thời gian một dao động</small></span></summary><p>Thời gian để vật hoàn thành một dao động toàn phần.</p><div class="formula">T = 1/f = 2π/ω</div><div class="detail-extra"><b>Đơn vị:</b> giây (s).<br><b>Lưu ý:</b> chu kì càng nhỏ thì dao động càng nhanh.</div></details>
+        <details class="theory-card" open><summary><span class="term-symbol">f</span><span><b>Tần số</b><small>Số dao động mỗi giây</small></span></summary><p>Cho biết trong một giây vật thực hiện bao nhiêu dao động toàn phần.</p><div class="formula">f = 1/T = ω/(2π)</div><div class="detail-extra"><b>Đơn vị:</b> héc (Hz).<br><b>Lưu ý:</b> 2 Hz nghĩa là 2 dao động toàn phần trong một giây.</div></details>
+        <details class="theory-card" open><summary><span class="term-symbol">Wđ</span><span><b>Động năng</b><small>Năng lượng chuyển động</small></span></summary><p>Động năng lớn nhất khi vật qua vị trí cân bằng; bằng 0 tại hai biên.</p><div class="formula">Wđ = ½mv²</div><div class="detail-extra"><b>Đơn vị:</b> jun (J).<br><b>Lưu ý:</b> động năng phụ thuộc vào tốc độ, không phụ thuộc trực tiếp vào dấu của vận tốc.</div></details>
+        <details class="theory-card" open><summary><span class="term-symbol">Wt</span><span><b>Thế năng</b><small>Năng lượng do vị trí</small></span></summary><p>Với con lắc lò xo, thế năng đàn hồi tăng khi độ lớn li độ tăng.</p><div class="formula">Wt = ½kx²</div><div class="detail-extra"><b>Đơn vị:</b> jun (J).<br><b>Lưu ý:</b> lấy thế năng bằng 0 tại vị trí cân bằng theo mốc thường dùng; ở hai biên, thế năng cực đại.</div></details>
+        <details class="theory-card" open><summary><span class="term-symbol">W</span><span><b>Cơ năng</b><small>Tổng năng lượng cơ học</small></span></summary><p>Trong dao động điều hòa lí tưởng, cơ năng được bảo toàn.</p><div class="formula">W = Wđ + Wt = ½kA²</div><div class="detail-extra"><b>Đơn vị:</b> jun (J).<br><b>Lưu ý:</b> nếu biên độ tăng gấp đôi thì cơ năng tăng gấp bốn lần vì W tỉ lệ với A².</div></details>
+        <details class="theory-card" open><summary><span class="term-symbol">v, a</span><span><b>Vận tốc và gia tốc</b><small>Đại lượng liên quan</small></span></summary><p>Vận tốc cho biết tốc độ và chiều chuyển động. Gia tốc luôn hướng về vị trí cân bằng.</p><div class="formula">v = −ωA sin(ωt + φ₀)<br>a = −ω²A cos(ωt + φ₀) = −ω²x</div><div class="detail-extra"><b>Đơn vị:</b> v là m/s; a là m/s².<br><b>Lưu ý:</b> tại vị trí cân bằng, |v| cực đại và a = 0; tại hai biên, v = 0 và |a| cực đại, luôn hướng về vị trí cân bằng.</div></details>
+      </div>
+      <section class="motion-guide" aria-labelledby="motionGuideTitle">
+        <div class="eyebrow">Sơ đồ đọc nhanh</div><h3 id="motionGuideTitle">Sơ đồ dao động điều hòa: x, v, a và A</h3>
+        <p class="motion-guide-intro">Quy ước chiều dương sang phải. Sơ đồ dưới đây giúp nhớ dấu của li độ, vận tốc và gia tốc tại các vị trí đặc biệt.</p>
+        <div class="motion-axis" role="img" aria-label="Trục dao động từ biên âm qua vị trí cân bằng đến biên dương">
+          <div class="axis-line"></div><div class="axis-point left"><b>−A</b><small>Biên âm</small><span>v = 0</span><span>a hướng phải</span></div>
+          <div class="axis-point center"><b>0</b><small>Cân bằng</small><span>|v| cực đại</span><span>a = 0</span></div>
+          <div class="axis-point right"><b>+A</b><small>Biên dương</small><span>v = 0</span><span>a hướng trái</span></div>
+          <div class="axis-arrow">Chiều dương →</div>
+        </div>
+        <div class="motion-rules"><div><b>Li độ x</b><p>Dấu cho biết phía của vị trí cân bằng; độ lớn |x| không vượt quá A.</p></div><div><b>Biên độ A</b><p>Luôn không âm; A là độ lớn li độ cực đại, không phải một vị trí có dấu.</p></div><div><b>Vận tốc v</b><p>Dấu cho biết chiều chuyển động. Cùng một x có thể có hai dấu v khác nhau.</p></div><div><b>Gia tốc a</b><p>Luôn ngược dấu với x vì a = −ω²x; gia tốc hướng về vị trí cân bằng.</p></div></div>
+      </section>
+      <div class="callout energy-special"><div class="callout-icon">★</div><div><strong>Điểm đặc biệt: năng lượng đổi dạng nhưng tổng không đổi</strong><p><b>Ở vị trí cân bằng:</b> x = 0, thế năng bằng 0 và động năng cực đại. <b>Ở hai biên:</b> x = ±A, vận tốc bằng 0, động năng bằng 0 và thế năng cực đại. <b>Ở mọi vị trí:</b> Wđ + Wt = W. Khi động năng tăng thì thế năng giảm đúng bằng phần tăng đó.</p><p class="energy-example">Ví dụ: nếu cơ năng là 10 J và động năng tại một thời điểm là 7 J thì thế năng lúc đó là 3 J.</p></div></div>
+
+
+      <div class="advanced-modal" id="advancedModal" role="dialog" aria-modal="true" aria-labelledby="advancedModalTitle">
+        <div class="advanced-dialog">
+          <div class="advanced-dialog-head"><h3 id="advancedModalTitle">Góc nhìn vật lý nâng cao</h3><button type="button" class="advanced-close" id="advancedClose" aria-label="Đóng cửa sổ">×</button></div>
+          <div class="advanced-dialog-body" id="advancedModalBody"></div>
+        </div>
+      </div>
+      <section class="quiz-section" id="practice"><div class="quiz-heading"><div class="eyebrow">Tự kiểm tra</div><h2>Bài tập cuối trang</h2><p>Chọn đáp án cho từng câu rồi bấm kiểm tra để xem lời giải.</p></div>
+        <div class="quiz-list">
+          <fieldset class="quiz-item" data-answer="C"><legend>1. Một vật có biên độ 5 cm. Giá trị nào sau đây không thể là li độ?</legend><label><input type="radio" name="q1" value="A"> A. −3 cm</label><label><input type="radio" name="q1" value="B"> B. 0 cm</label><label><input type="radio" name="q1" value="C"> C. 6 cm</label><p class="explain">Li độ luôn thỏa mãn −A ≤ x ≤ A; 6 cm lớn hơn biên độ 5 cm.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="B"><legend>2. Một vật thực hiện 4 dao động trong 2 s. Tần số bằng bao nhiêu?</legend><label><input type="radio" name="q2" value="A"> A. 0,5 Hz</label><label><input type="radio" name="q2" value="B"> B. 2 Hz</label><label><input type="radio" name="q2" value="C"> C. 8 Hz</label><p class="explain">f = số dao động / thời gian = 4/2 = 2 Hz.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="A"><legend>3. Chu kì T = 0,25 s. Tần số góc bằng bao nhiêu?</legend><label><input type="radio" name="q3" value="A"> A. 8π rad/s</label><label><input type="radio" name="q3" value="B"> B. 2π rad/s</label><label><input type="radio" name="q3" value="C"> C. π/4 rad/s</label><p class="explain">ω = 2π/T = 2π/0,25 = 8π rad/s.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="B"><legend>4. Pha dao động tại t = 0 được gọi là gì?</legend><label><input type="radio" name="q4" value="A"> A. Biên độ</label><label><input type="radio" name="q4" value="B"> B. Pha ban đầu</label><label><input type="radio" name="q4" value="C"> C. Tần số</label><p class="explain">Pha ban đầu φ₀ là pha tại thời điểm t = 0.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="B"><legend>5. Trong phương trình x = A cos(ωt + φ₀), đơn vị SI của ω là gì?</legend><label><input type="radio" name="q5" value="A"> A. Hz</label><label><input type="radio" name="q5" value="B"> B. rad/s</label><label><input type="radio" name="q5" value="C"> C. m/s</label><p class="explain">ω là tốc độ biến thiên pha theo thời gian, có đơn vị rad/s.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="A"><legend>6. Khi vật đi qua vị trí cân bằng, đại lượng nào đạt độ lớn cực đại?</legend><label><input type="radio" name="q6" value="A"> A. Tốc độ</label><label><input type="radio" name="q6" value="B"> B. Li độ</label><label><input type="radio" name="q6" value="C"> C. Thế năng đàn hồi</label><p class="explain">Tại x = 0, tốc độ cực đại, còn thế năng đàn hồi bằng 0 theo mốc cân bằng.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="C"><legend>7. Ở hai biên của dao động điều hòa, động năng bằng bao nhiêu?</legend><label><input type="radio" name="q7" value="A"> A. Cực đại</label><label><input type="radio" name="q7" value="B"> B. Bằng cơ năng</label><label><input type="radio" name="q7" value="C"> C. Bằng 0</label><p class="explain">Ở biên, vận tốc bằng 0 nên Wđ = ½mv² = 0.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="B"><legend>8. Nếu A = 4 cm và x = −3 cm, điều nào đúng?</legend><label><input type="radio" name="q8" value="A"> A. Vật nằm ngoài phạm vi dao động</label><label><input type="radio" name="q8" value="B"> B. Vật ở phía âm của vị trí cân bằng</label><label><input type="radio" name="q8" value="C"> C. Li độ bằng quãng đường đã đi</label><p class="explain">Li độ âm cho biết vật ở phía âm; |x| = 3 cm nhỏ hơn A = 4 cm.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="C"><legend>9. Nếu T = 2 s thì f bằng bao nhiêu?</legend><label><input type="radio" name="q9" value="A"> A. 2 Hz</label><label><input type="radio" name="q9" value="B"> B. 1 Hz</label><label><input type="radio" name="q9" value="C"> C. 0,5 Hz</label><p class="explain">f = 1/T = 1/2 = 0,5 Hz.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="A"><legend>10. Một dao động có f = 5 Hz. ω bằng bao nhiêu?</legend><label><input type="radio" name="q10" value="A"> A. 10π rad/s</label><label><input type="radio" name="q10" value="B"> B. 5π rad/s</label><label><input type="radio" name="q10" value="C"> C. π/5 rad/s</label><p class="explain">ω = 2πf = 10π rad/s.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="C"><legend>11. Vật bắt đầu ở biên dương. Pha ban đầu có thể là giá trị nào?</legend><label><input type="radio" name="q11" value="A"> A. π/2</label><label><input type="radio" name="q11" value="B"> B. π</label><label><input type="radio" name="q11" value="C"> C. 0</label><p class="explain">x₀ = A nên cosφ₀ = 1; một lựa chọn phù hợp là φ₀ = 0.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="A"><legend>12. Một vật có A = 0,10 m và k = 200 N/m. Cơ năng là bao nhiêu?</legend><label><input type="radio" name="q12" value="A"> A. 1 J</label><label><input type="radio" name="q12" value="B"> B. 2 J</label><label><input type="radio" name="q12" value="C"> C. 10 J</label><p class="explain">W = ½kA² = ½ × 200 × (0,10)² = 1 J.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="C"><legend>13. Nếu biên độ tăng 3 lần, k không đổi, cơ năng tăng bao nhiêu lần?</legend><label><input type="radio" name="q13" value="A"> A. 3 lần</label><label><input type="radio" name="q13" value="B"> B. 6 lần</label><label><input type="radio" name="q13" value="C"> C. 9 lần</label><p class="explain">W tỉ lệ với A², nên cơ năng tăng 3² = 9 lần.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="B"><legend>14. Tại một thời điểm, cơ năng 12 J và thế năng 5 J. Động năng bằng bao nhiêu?</legend><label><input type="radio" name="q14" value="A"> A. 17 J</label><label><input type="radio" name="q14" value="B"> B. 7 J</label><label><input type="radio" name="q14" value="C"> C. 2,4 J</label><p class="explain">Wđ = W − Wt = 12 − 5 = 7 J.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="B"><legend>15. Với dao động điều hòa lý tưởng, tần số biến thiên của động năng bằng bao nhiêu lần tần số dao động?</legend><label><input type="radio" name="q15" value="A"> A. Bằng f</label><label><input type="radio" name="q15" value="B"> B. Bằng 2f</label><label><input type="radio" name="q15" value="C"> C. Bằng f/2</label><p class="explain">Động năng phụ thuộc vào sin² hoặc cos² của pha nên lặp lại sau T/2; tần số biến thiên là 2f.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="B"><legend>16. Trong một chu kì, động năng trung bình bằng bao nhiêu?</legend><label><input type="radio" name="q16" value="A"> A. W</label><label><input type="radio" name="q16" value="B"> B. W/2</label><label><input type="radio" name="q16" value="C"> C. 2W</label><p class="explain">Với dao động điều hòa lý tưởng, giá trị trung bình theo thời gian của động năng bằng W/2.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="A"><legend>17. Một vật có A = 6 cm, tại x = 3 cm. Tỉ số Wt/W bằng bao nhiêu?</legend><label><input type="radio" name="q17" value="A"> A. 1/4</label><label><input type="radio" name="q17" value="B"> B. 1/2</label><label><input type="radio" name="q17" value="C"> C. 3/4</label><p class="explain">Wt/W = x²/A² = 3²/6² = 9/36 = 1/4.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="A"><legend>18. Một vật dao động với ω = 4 rad/s và T bằng bao nhiêu?</legend><label><input type="radio" name="q18" value="A"> A. π/2 s</label><label><input type="radio" name="q18" value="B"> B. 2π s</label><label><input type="radio" name="q18" value="C"> C. π/4 s</label><p class="explain">T = 2π/ω = 2π/4 = π/2 s.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="A"><legend>19. Nếu x = A cosφ và v = −ωA sinφ, phương trình không gian pha nào đúng?</legend><label><input type="radio" name="q19" value="A"> A. x² + (v/ω)² = A²</label><label><input type="radio" name="q19" value="B"> B. x + v = A</label><label><input type="radio" name="q19" value="C"> C. x² + v² = A</label><p class="explain">Bình phương rồi cộng hai biểu thức chuẩn hóa: cos²φ + sin²φ = 1.</p></fieldset>
+          <fieldset class="quiz-item" data-answer="B"><legend>20. Cơ năng cơ học của hệ thật có ma sát thường giảm vì đâu?</legend><label><input type="radio" name="q20" value="A"> A. Năng lượng bị hủy hoàn toàn</label><label><input type="radio" name="q20" value="B"> B. Một phần chuyển thành nhiệt và âm thanh</label><label><input type="radio" name="q20" value="C"> C. Biên độ tự tăng</label><p class="explain">Ma sát làm cơ năng cơ học chuyển thành các dạng năng lượng khác; tổng năng lượng vẫn được bảo toàn.</p></fieldset>
+        </div><div class="quiz-actions"><button class="btn primary" id="checkQuiz" type="button">Kiểm tra đáp án</button><button class="btn" id="resetQuiz" type="button">Làm lại</button><strong id="quizScore" aria-live="polite"></strong></div>
+      </section>
+    </section>
+  </main>
+  <footer class="wrap"><div><strong>PHYSICS LAB</strong> · Mô phỏng học tập Vật lí 11</div><div>Thiết kế: <strong>Bảo Trâm · C1</strong> ✦</div></footer>
+
+  <script>
+  (() => {
+    const $ = (id) => document.getElementById(id);
+    const amp = $('amp'), omega = $('omega'), phase0 = $('phase0'), time = $('time');
+    const playBtn = $('playBtn');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const MASS = 0.2; // kg — khối lượng giả định cố định để minh họa năng lượng
+    let t = 0, playing = false, lastFrame = null, raf = null;
+
+    const fmt = (n, digits=3) => Number(n).toLocaleString('vi-VN',{minimumFractionDigits:digits,maximumFractionDigits:digits});
+    const params = () => ({ A: Number(amp.value)/100, omega: Number(omega.value), phi0: Number(phase0.value)*Math.PI/180 });
+    const period = () => 2*Math.PI/Number(omega.value);
+    const phaseAt = (now) => { const p=params(); return p.omega*now+p.phi0; };
+    const energyAt = (now) => {
+      const p=params(), phi=p.omega*now+p.phi0;
+      const k=MASS*p.omega*p.omega;
+      const W=0.5*k*p.A*p.A;
+      const x=p.A*Math.cos(phi), v=-p.omega*p.A*Math.sin(phi);
+      return {phi,x,v,k,W,Wk:0.5*MASS*v*v,Wt:0.5*k*x*x};
+    };
+    function drawCircle(data){
+      const cx=210, cy=170, R=112, angle=data.phi;
+      const px=cx+R*Math.cos(angle), py=cy-R*Math.sin(angle), projX=px;
+      $('radiusVector').setAttribute('x2',px); $('radiusVector').setAttribute('y2',py);
+      $('rotatingPoint').setAttribute('cx',px); $('rotatingPoint').setAttribute('cy',py);
+      $('projectionGuide').setAttribute('x1',px); $('projectionGuide').setAttribute('y1',py); $('projectionGuide').setAttribute('x2',projX); $('projectionGuide').setAttribute('y2',cy);
+      $('projectionPoint').setAttribute('cx',projX); $('projectionPoint').setAttribute('cy',cy);
+      $('positionGuide').setAttribute('x1',cx); $('positionGuide').setAttribute('y1',cy); $('positionGuide').setAttribute('x2',projX); $('positionGuide').setAttribute('y2',cy);
+      // Arc hiển thị pha theo chiều dương; rút gọn góc về một vòng để dễ nhìn.
+      let norm=((angle%(2*Math.PI))+2*Math.PI)%(2*Math.PI);
+      const arcR=42, sx=cx+arcR, sy=cy;
+      const ex=cx+arcR*Math.cos(norm), ey=cy-arcR*Math.sin(norm);
+      const large=norm>Math.PI?1:0;
+      $('phaseArc').setAttribute('d', norm<0.025 ? '' : `M ${sx} ${sy} A ${arcR} ${arcR} 0 ${large} 0 ${ex} ${ey}`);
+      const deg=((angle*180/Math.PI)%360+360)%360;
+      $('phaseLabel').setAttribute('x',cx+61*Math.cos(norm/2)-15);
+      $('phaseLabel').setAttribute('y',cy-61*Math.sin(norm/2)-7);
+      $('phaseLabel').textContent=`φ = ${fmt(deg,0)}°`;
+      $('xLabel').setAttribute('x', Math.max(26,Math.min(320,projX-18)));
+      $('xLabel').setAttribute('y',cy+25);
+      const xCm=data.x*100;
+      $('xLabel').textContent=`x = ${xCm>=0?'+':''}${fmt(xCm,1)} cm`;
+    }
+    function drawGraph(data){
+      const canvas=$('energyGraph'), rect=canvas.getBoundingClientRect();
+      if(!rect.width) return;
+      const dpr=Math.min(window.devicePixelRatio||1,2);
+      canvas.width=Math.round(rect.width*dpr); canvas.height=Math.round(260*dpr);
+      const ctx=canvas.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+      const w=rect.width,h=260,pad={l:43,r:12,t:17,b:34},pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+      ctx.clearRect(0,0,w,h);
+      const p=params(), k=MASS*p.omega*p.omega, W=0.5*k*p.A*p.A;
+      const maxT=2*period(), maxY=Math.max(W,1e-9)*1.13;
+      const gx=x=>pad.l+x*pw, gy=y=>pad.t+ph-(y/maxY)*ph;
+      // Lưới nền
+      ctx.lineWidth=1; ctx.strokeStyle='rgba(151,178,207,.12)'; ctx.fillStyle='#8da4bf'; ctx.font='10px system-ui';
+      for(let i=0;i<=4;i++){
+        const y=W*i/4; ctx.beginPath();ctx.moveTo(pad.l,gy(y));ctx.lineTo(w-pad.r,gy(y));ctx.stroke();
+        ctx.fillText(`${fmt(y*1000,1)}`,4,gy(y)+3);
+      }
+      ctx.fillStyle='#8199b5';ctx.fillText('mJ',7,11);
+      for(let i=0;i<=4;i++){
+        const x=maxT*i/4;ctx.beginPath();ctx.moveTo(gx(i/4),pad.t);ctx.lineTo(gx(i/4),pad.t+ph);ctx.stroke();
+        ctx.fillText(`${fmt(x,2)}s`,gx(i/4)-14,h-10);
+      }
+      function curve(which,color,width){
+        ctx.beginPath();
+        const N=Math.max(180,Math.floor(pw));
+        for(let i=0;i<=N;i++){
+          const ratio=i/N, tt=ratio*maxT, phi=p.omega*tt+p.phi0;
+          let en=which==='kin'?W*Math.sin(phi)**2:which==='pot'?W*Math.cos(phi)**2:W;
+          const x=gx(ratio), y=gy(en);
+          if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+        }
+        ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineJoin='round';ctx.stroke();
+      }
+      curve('kin','#ff8db8',2.2);curve('pot','#b8a4ff',2.2);curve('total','#d5ff75',1.7);
+      const ratio=((t%maxT)+maxT)%maxT/maxT, px=gx(ratio);
+      ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(238,245,255,.55)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(px,pad.t);ctx.lineTo(px,pad.t+ph);ctx.stroke();ctx.setLineDash([]);
+      const py=gy(data.Wk);ctx.beginPath();ctx.arc(px,py,4,0,2*Math.PI);ctx.fillStyle='#ff8db8';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.stroke();
+    }
+    function update(){
+      const p=params(), d=energyAt(t), T=period(), f=1/T;
+      $('ampOut').textContent=fmt(p.A*100,1)+' cm';
+      $('omegaOut').textContent=fmt(p.omega,1)+' rad/s';
+      $('phase0Out').textContent=fmt(Number(phase0.value),0)+'°';
+      $('timeOut').textContent=fmt(t,3)+' s';
+      $('timeMax').textContent=fmt(2*T,3)+' s · 2 chu kì';
+      time.max=String(2*T); time.value=String(Math.min(t,2*T));
+      $('kineticOut').textContent=fmt(d.Wk,4)+' J';
+      $('potentialOut').textContent=fmt(d.Wt,4)+' J';
+      $('totalOut').textContent=fmt(d.W,4)+' J';
+      $('xOut').textContent=(d.x>=0?'+':'')+fmt(d.x*100,2)+' cm';
+      $('phaseOut').textContent=fmt(d.phi,2)+' rad';
+      $('velocityOut').textContent=(d.v>=0?'+':'')+fmt(d.v,3)+' m/s';
+      drawCircle(d);drawGraph(d);
+      // Giữ đồng bộ trạng thái mô phỏng với nút điều khiển.
+      playBtn.textContent=playing?'Ⅱ Tạm dừng':'▶ Chạy mô phỏng';
+    }
+    function stop(){playing=false;lastFrame=null;if(raf!==null)cancelAnimationFrame(raf);raf=null;update();}
+    function tick(stamp){
+      if(!playing)return;
+      if(lastFrame===null)lastFrame=stamp;
+      const delta=Math.min((stamp-lastFrame)/1000,0.05);lastFrame=stamp;
+      t+=delta;
+      if(t>2*period())t=0;
+      update();raf=requestAnimationFrame(tick);
+    }
+    function start(){if(playing){stop();return;}playing=true;lastFrame=null;update();raf=requestAnimationFrame(tick);}
+    playBtn.addEventListener('click',start);
+    $('resetBtn').addEventListener('click',()=>{stop();t=0;update();});
+    $('stepBtn').addEventListener('click',()=>{stop();t+=period()/4;if(t>2*period())t=0;update();});
+    [amp,omega,phase0].forEach(el=>el.addEventListener('input',()=>{
+      // Không để mô phỏng vượt quá miền thời gian của thanh trượt khi thay đổi ω.
+      if(t>2*period())t=0;update();
+    }));
+    time.addEventListener('input',()=>{stop();t=Number(time.value);update();});
+    window.addEventListener('resize',()=>drawGraph(energyAt(t)));
+    document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing)stop();});
+    if(reducedMotion){playBtn.textContent='▶ Chạy mô phỏng';}
+    $('checkQuiz').addEventListener('click',()=>{
+      let score=0;
+      document.querySelectorAll('.quiz-item').forEach(item=>{
+        item.classList.add('checked');
+        const chosen=item.querySelector('input:checked');
+        item.classList.remove('correct','wrong');
+        if(chosen && chosen.value===item.dataset.answer){score++;item.classList.add('correct');}
+        else item.classList.add('wrong');
+      });
+      $('quizScore').textContent=`Bạn đúng ${score}/${document.querySelectorAll('.quiz-item').length} câu.`;
+    });
+    $('resetQuiz').addEventListener('click',()=>{
+      document.querySelectorAll('.quiz-item').forEach(item=>{item.querySelectorAll('input').forEach(input=>input.checked=false);item.classList.remove('checked','correct','wrong');});
+      $('quizScore').textContent='';
+    });
+
+    // Cửa sổ kiến thức nâng cao: mỗi ô có nút riêng, không làm mở/đóng ô lý thuyết.
+    const advancedContent = {
+      'A': `<article class="insight"><h4>Biên độ và năng lượng</h4><p>Biên độ là độ lệch cực đại. Với cùng một lò xo, cơ năng tỉ lệ với bình phương biên độ, nên tăng A gấp đôi thì W tăng gấp bốn.</p><span class="mini-formula">W = ½kA²</span></article><article class="insight"><h4>Vì sao vật ở gần biên lâu hơn?</h4><p>Ở hai biên, vận tốc bằng 0; gần biên vật chuyển động chậm hơn so với lúc qua vị trí cân bằng. Vì vậy, nếu chọn ngẫu nhiên một thời điểm, vật có xu hướng được bắt gặp gần hai biên nhiều hơn.</p></article>`,
+      'x': `<article class="insight"><h4>Li độ không phải quãng đường</h4><p>Li độ x có dấu và cho biết vị trí so với cân bằng; quãng đường là độ dài đường đi nên không âm. Vật luôn thỏa mãn −A ≤ x ≤ A.</p><span class="mini-formula">x = A cos φ</span></article><article class="insight"><h4>Không gian pha</h4><p>Nếu biểu diễn trục ngang là x và trục dọc là v/ω, trạng thái dao động lý tưởng nằm trên đường tròn bán kính A.</p><span class="mini-formula">x² + (v/ω)² = A²</span></article>`,
+      'ω': `<article class="insight"><h4>ω không đơn giản là “vận tốc quay”</h4><p>Trong dao động điều hòa, ω cho biết pha thay đổi nhanh đến mức nào theo thời gian. Có thể hình dung đây là tốc độ biến thiên pha, dù vật dao động thật chỉ chuyển động qua lại trên một đường thẳng.</p><span class="mini-formula">ω = 2π/T = 2πf</span></article>`,
+      'Wđ': `<article class="insight"><h4>Năng lượng biến thiên nhanh gấp đôi</h4><p>Động năng và thế năng lặp lại trạng thái sau mỗi nửa chu kì, vì chúng phụ thuộc vào bình phương của sin hoặc cos. Do đó tần số biến thiên năng lượng bằng 2f.</p><span class="mini-formula">Wđ = W sin²φ</span></article><article class="insight"><h4>Giá trị trung bình</h4><p>Xét trong một chu kì, động năng trung bình bằng thế năng trung bình; mỗi giá trị bằng một nửa cơ năng.</p><span class="mini-formula">⟨Wđ⟩ = ⟨Wt⟩ = W/2</span></article>`,
+      'Wt': `<article class="insight"><h4>Nguồn gốc vi mô của thế năng đàn hồi</h4><p>Khi vật liệu bị kéo hoặc nén, khoảng cách và tương tác giữa các nguyên tử thay đổi. Mô hình lò xo gom các tương tác phức tạp đó thành công thức gần đúng trong giới hạn đàn hồi.</p><span class="mini-formula">Wt = ½kx²</span></article><article class="insight"><h4>Thế năng lớn nhất ở đâu?</h4><p>Với mốc thế năng bằng 0 tại vị trí cân bằng, thế năng cực đại ở hai biên x = ±A.</p></article>`,
+      'W': `<article class="insight"><h4>Bảo toàn cơ năng là mô hình lý tưởng</h4><p>Trong bài tập phổ thông, thường bỏ qua ma sát và lực cản nên cơ năng không đổi. Trong hệ thật, cơ năng cơ học có thể chuyển thành nhiệt hoặc âm thanh; năng lượng tổng vẫn được bảo toàn.</p><span class="mini-formula">W = Wđ + Wt = hằng số (khi không hao phí)</span></article><article class="insight"><h4>Liên hệ vật lý lượng tử</h4><p>Trong mô hình dao động tử điều hòa lượng tử, mức năng lượng rời rạc và trạng thái cơ bản có năng lượng điểm không. Đây là kiến thức mở rộng, không dùng trực tiếp để giải bài tập Vật lí 11 phổ thông.</p><span class="mini-formula">Eₙ = (n + ½)ℏω</span></article>`,
+      'T': `<article class="insight"><h4>Chu kì và năng lượng</h4><p>Một chu kì là thời gian để trạng thái dao động lặp lại. Riêng động năng và thế năng lặp trạng thái sau T/2, vì chúng không phân biệt chiều chuyển động.</p><span class="mini-formula">T = 1/f;  Tnăng lượng = T/2</span></article>`,
+      'f': `<article class="insight"><h4>Tần số của dao động và năng lượng</h4><p>Li độ lặp lại sau một chu kì nên có tần số f. Động năng và thế năng lặp lại hai lần trong mỗi chu kì, nên tần số biến thiên năng lượng là 2f.</p><span class="mini-formula">f = 1/T;  fnăng lượng = 2f</span></article>`,
+      'φ': `<article class="insight"><h4>Pha mô tả trạng thái</h4><p>Pha φ = ωt + φ₀ xác định trạng thái của vật tại thời điểm t. Hai vật có cùng pha tại một thời điểm sẽ có cùng li độ và cùng chiều biến thiên li độ nếu cùng quy ước dao động.</p><span class="mini-formula">φ = ωt + φ₀</span></article>`,
+      'φ₀': `<article class="insight"><h4>Pha ban đầu quyết định điều gì?</h4><p>Pha ban đầu kết hợp với A xác định li độ ban đầu; dấu vận tốc ban đầu còn phụ thuộc vào sin φ₀ theo công thức v = −ωA sin φ.</p><span class="mini-formula">x₀ = A cos φ₀</span></article>`,
+      't': `<article class="insight"><h4>Chọn mốc thời gian</h4><p>t = 0 là mốc do người giải chọn. Đổi mốc thời gian sẽ làm pha ban đầu thay đổi, nhưng không làm thay đổi bản chất chuyển động.</p><span class="mini-formula">φ(t) = ωt + φ₀</span></article>`,
+      'v, a': `<article class="insight"><h4>Vận tốc và gia tốc</h4><p>Tại vị trí cân bằng, tốc độ cực đại và gia tốc bằng 0. Ở hai biên, vận tốc bằng 0 còn độ lớn gia tốc cực đại, luôn hướng về vị trí cân bằng.</p><span class="mini-formula">v = −ωA sin φ;  a = −ω²x</span></article>`
+    };
+    const advancedModal = $('advancedModal');
+    const advancedBody = $('advancedModalBody');
+    const advancedClose = $('advancedClose');
+    document.querySelectorAll('.theory-card').forEach(card => {
+      const symbol = card.querySelector('.term-symbol')?.textContent.trim();
+      const btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'advanced-mini'; btn.textContent = '✦ Nâng cao';
+      btn.setAttribute('aria-label', `Mở kiến thức nâng cao về ${card.querySelector('b')?.textContent || symbol}`);
+      btn.addEventListener('click', (event) => {
+        event.preventDefault(); event.stopPropagation();
+        const title = card.querySelector('b')?.textContent || 'Góc nhìn vật lý nâng cao';
+        $('advancedModalTitle').textContent = `Góc nhìn nâng cao · ${title}`;
+        advancedBody.innerHTML = advancedContent[symbol] || '<p>Chưa có nội dung nâng cao riêng cho đại lượng này.</p>';
+        advancedModal.classList.add('open'); document.body.style.overflow = 'hidden'; advancedClose.focus();
+      });
+      card.insertBefore(btn, card.firstChild);
+    });
+    function closeAdvanced(){advancedModal.classList.remove('open');document.body.style.overflow='';}
+    advancedClose.addEventListener('click', closeAdvanced);
+    advancedModal.addEventListener('click', e => {if(e.target===advancedModal)closeAdvanced();});
+    document.addEventListener('keydown', e => {if(e.key==='Escape'&&advancedModal.classList.contains('open'))closeAdvanced();});
+
+    update();
+  })();
+  </script>
+</body>
+</html>
