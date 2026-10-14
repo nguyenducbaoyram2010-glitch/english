@@ -37,7 +37,7 @@
     .section-heading{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:20px 0 15px}
     .section-heading h2{margin:0;font-size:1.35rem;letter-spacing:-.025em}
     .section-heading p{margin:4px 0 0;color:var(--muted);font-size:.88rem}
-    .lab-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:17px;align-items:stretch}
+    .lab-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:17px;align-items:start}
     .panel{border:1px solid #ffffff14;border-radius:22px;background:linear-gradient(150deg,#13243aee,#0d1929f5);box-shadow:var(--shadow);overflow:hidden;min-width:0}
     .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;border-bottom:1px solid #ffffff12}
     .panel-title{font-weight:800;display:flex;align-items:center;gap:10px}
@@ -64,7 +64,7 @@
     .time-controls{padding:16px 20px 19px;border-top:1px solid #ffffff12}
     .time-readout{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
     .time-readout strong{color:var(--cyan);font-variant-numeric:tabular-nums}
-    .energy-panel{display:flex;flex-direction:column}
+    .energy-panel{display:flex;flex-direction:column;align-self:start;height:max-content;min-height:0}
     .energy-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:17px 17px 10px}
     .energy-value{border:1px solid #ffffff13;background:#ffffff06;border-radius:14px;padding:12px 10px;min-width:0}
     .energy-value .name{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted);white-space:nowrap}
@@ -150,9 +150,61 @@
     .quiz-item.correct{border-color:#54a86a;background:#f7fff8}.quiz-item.wrong{border-color:#d76c75;background:#fff8f8}.quiz-item.checked .explain{display:block}
     .quiz-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px}.quiz-actions strong{color:#087eaa}
     @media(max-width:620px){.quiz-list{grid-template-columns:1fr}.quiz-section{padding:16px}}
+
+    .minus-sign-guide{margin:22px 0;padding:22px;border:1px solid #f0bad4;border-radius:22px;background:linear-gradient(145deg,#fff8fc,#fff0f7);color:#61344e;box-shadow:0 8px 25px #d96ba00c}
+    .minus-guide-kicker{font-size:.78rem;font-weight:850;letter-spacing:.06em;color:#bf4d86}
+    .minus-sign-guide h3{margin:5px 0 6px;color:#9f326b;font-size:1.3rem}
+    .minus-guide-intro{margin:0 0 15px;color:#80556d}
+    .minus-tip{margin-top:12px;padding:15px;border:1px solid #f2cde0;border-radius:15px;background:#fff}
+    .minus-tip h4{margin:0 0 8px;color:#a33d73;font-size:1rem}
+    .minus-tip p{margin:8px 0 0;color:#68475a;line-height:1.65;font-size:.91rem}
+    .minus-sign-guide .mini-formula{display:block;margin-top:8px;padding:10px 12px;border-radius:10px;background:#fff0f7;border:1px solid #f5d6e6;color:#8e2e63;font-family:Consolas,monospace;font-weight:750;overflow-wrap:anywhere}
+    .minus-guide-summary{margin-top:14px;padding:13px 15px;border-radius:13px;background:#ffe5f1;color:#7b3158;line-height:1.65}
+    @media(max-width:620px){.minus-sign-guide{padding:15px}.minus-tip{padding:12px}}
+
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     @media(max-width:900px){.hero{grid-template-columns:1fr .8fr}.lab-grid{grid-template-columns:1fr}.theory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.energy-panel{min-height:0}}
     @media(max-width:620px){.wrap{width:min(100% - 22px,1180px)}.topbar{padding:15px 0}.brand{font-size:.68rem;letter-spacing:.08em}.brand-mark{width:36px;height:36px}.top-pill{font-size:.68rem;padding:6px 9px}.hero{grid-template-columns:1fr;padding:32px 0 22px;gap:18px}.hero-visual{min-height:165px}h1{font-size:2.55rem}.section-heading{align-items:start;flex-direction:column}.panel-head{padding:15px 16px}.circle-area{padding:5px 5px 0}.controls,.time-controls{padding-left:16px;padding-right:16px}.energy-values{gap:6px;padding:12px 10px 8px}.energy-value{padding:10px 7px}.energy-value .name{font-size:.67rem;gap:4px}.energy-value output{font-size:.88rem}.live-facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.fact{padding:10px 8px}.fact span{font-size:.65rem}.fact strong{font-size:.78rem}.theory-intro{margin-top:29px}.theory-intro h2{font-size:1.45rem}.theory-grid{grid-template-columns:1fr}.theory-card{padding:16px}.callout{padding:14px}.graph-note{margin:0 12px 13px}footer{align-items:flex-start;flex-direction:column;gap:5px}}
+    .straight-guide{padding:18px;border:1px solid #f1bfd6;border-radius:18px;background:#fff6fb;margin:14px 0;color:#75445f}
+    .straight-title{font-weight:850;color:#b83f7d;margin:8px 0 12px}
+    .straight-track{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center;padding:12px 0 16px;margin-bottom:10px}
+    .track-line{position:absolute;left:12%;right:12%;top:29px;height:5px;border-radius:9px;background:#e78bb6}
+    .track-line:after{content:'♥';position:absolute;right:-9px;top:-13px;color:#c43f82;font-size:20px}
+    .track-stop{position:relative;z-index:1;display:flex;align-items:center;flex-direction:column;gap:4px;font-size:.86rem}
+    .track-stop b{display:grid;place-items:center;width:38px;height:38px;border:2px solid #d94f91;border-radius:50%;background:#ffe4f0;color:#a83b70}
+    .track-stop span{font-weight:800}.track-stop small{font-size:.75rem;color:#9a7188}.stop-mid b{background:#f0e7ff;border-color:#b78bd4;color:#7750a2}
+    .energy-bar-row{display:grid;grid-template-columns:100px 1fr;gap:12px;align-items:center;margin:10px 0 18px}.energy-bar-row>b{font-size:.9rem}
+    .energy-bar{height:34px;border-radius:999px;display:flex;align-items:center;padding:0 14px;font-size:.82rem;font-weight:800}
+    .total-bar{width:100%;background:linear-gradient(90deg,#f4a5c8,#d94f91);color:white;box-shadow:inset 0 0 0 1px #d94f9144}
+    .potential-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;text-align:center}
+    .potential-row>div{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 7px;border:1px solid #f2cadd;border-radius:13px;background:#fffafd}
+    .potential-row b{color:#a83b70}.pot-fill{display:block;width:100%;max-width:110px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#d8b6f0,#b78bd4);height:50px}
+    .pot-fill.low{height:8px;margin-top:42px}.potential-row small{font-size:.74rem;color:#85516d}
+    .kid-note{margin:15px 0 0;padding:12px 14px;background:#ffeaf4;border:1px solid #f0bfd7;border-radius:12px;line-height:1.65}
+    .hero:after{content:'🎀  🎀';right:2px;top:-15px;font-size:clamp(4rem,8vw,6.5rem);letter-spacing:-.18em;text-shadow:0 5px 0 #f7d0e2}
+    .motion-guide:after{content:'🎀  ♡  🎀';display:block;text-align:right;font-size:1.6rem;margin-top:8px;letter-spacing:8px}
+    @media(max-width:620px){.straight-guide{padding:12px}.energy-bar-row{grid-template-columns:1fr;gap:6px}.track-stop{font-size:.76rem}.track-stop small{font-size:.67rem}.potential-row{gap:6px}.potential-row>div{padding:9px 4px}.potential-row small{font-size:.66rem}}
+    .energy-map{margin:26px 0;padding:22px;border:1px solid #f0cadd;border-radius:24px;background:#fff7fb;position:relative;overflow:hidden;color:#75445f}
+    .energy-map:after{content:"🎀  ♡  🎀  ♡  🎀";display:block;text-align:center;font-size:1.5rem;letter-spacing:8px;margin-top:18px;color:#c34678}
+    .energy-map h3{margin:8px 0;font-size:1.45rem;color:#a83b70}
+    .energy-map-intro{max-width:850px;color:#85516d}
+    .energy-root{max-width:920px;margin:22px auto 0;text-align:center}
+    .energy-node{border:2px solid #efb9d2;border-radius:18px;padding:16px;background:#fffafd;box-shadow:0 5px 0 #f8dce9}
+    .energy-node b{display:block;color:#a83b70;font-size:1rem;letter-spacing:.04em}
+    .energy-node>strong{display:block;margin:7px 0;font-size:1.1rem;color:#673651}
+    .energy-node small,.energy-node p{color:#85516d}
+    .energy-node.total{max-width:430px;margin:auto;background:#ffe7f1;border-color:#df80ad}
+    .energy-branches{height:44px;display:flex;justify-content:space-around;align-items:center;color:#c34678;font-size:2rem;font-weight:900;max-width:620px;margin:auto}
+    .energy-children{display:grid;grid-template-columns:1fr 1.25fr;gap:16px;align-items:stretch}
+    .energy-node.kinetic{background:#fff0f7;border-color:#e9a8c7}
+    .energy-node.potential{background:#f9f0ff;border-color:#d5b5e8}
+    .energy-node.potential b{color:#8753a7}
+    .potential-types{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .potential-types>div{padding:12px;border:1px solid #e6cfee;border-radius:12px;background:#fffafd;display:flex;flex-direction:column;gap:6px}
+    .potential-types b{font-size:.85rem!important;letter-spacing:0!important;color:#8753a7!important}
+    .potential-types strong{font-size:1rem;color:#673651}
+    .energy-map-note{margin-top:17px;text-align:left;padding:14px 16px;border-radius:14px;background:#ffeaf4;border:1px solid #f0bfd7;line-height:1.7}
+    @media(max-width:620px){.energy-map{padding:15px}.energy-children{grid-template-columns:1fr}.energy-branches{height:32px}.potential-types{grid-template-columns:1fr}.energy-map:after{font-size:1.1rem;letter-spacing:3px}.energy-node{padding:13px}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
 
     /* Giao diện học sinh: sáng, rõ chữ, ít hiệu ứng gây rối */
@@ -272,7 +324,7 @@
       </div>
       <div class="hero-visual">
         <div class="panel-kicker">Phương trình dao động</div>
-        <div class="hero-equation">x = A cos(ωt + φ<sub>0</sub>)<small>Li độ là hình chiếu của vectơ quay lên trục dao động.</small></div>
+        <div class="hero-equation">x = A cos(ωt + φ<sub>0</sub>)<small>v = −ωA sin(ωt + φ<sub>0</sub>)</small><small>a = −ω²A cos(ωt + φ<sub>0</sub>) = −ω²x</small><small>Nhớ nhanh: x nói vị trí, v nói chiều chuyển động, a luôn hướng về vị trí cân bằng.</small></div>
         <div class="mini-stats"><div class="mini-stat">Động năng <strong>W<sub>đ</sub></strong></div><div class="mini-stat">Thế năng <strong>W<sub>t</sub></strong></div><div class="mini-stat">Cơ năng <strong>W = hằng số</strong></div></div>
       </div>
     </section>
@@ -340,7 +392,7 @@
           </div>
           <div class="graph-wrap"><canvas id="energyGraph" aria-label="Đồ thị động năng, thế năng và cơ năng theo thời gian"></canvas></div>
           <div class="graph-legend"><span class="legend-item"><i class="legend-line" style="background:var(--pink)"></i> Động năng Wđ</span><span class="legend-item"><i class="legend-line violet" style="background:var(--violet)"></i> Thế năng Wt</span><span class="legend-item"><i class="legend-line lime" style="background:var(--lime)"></i> Cơ năng W</span></div>
-          <p class="graph-note">🔎 <strong>Quan sát:</strong> W<sub>đ</sub> và W<sub>t</sub> chuyển hóa qua lại, nhưng tổng cơ năng W không đổi nếu bỏ qua ma sát và lực cản.</p>
+          <p class="graph-note">🔎 <strong>Quan sát:</strong> Động năng và thế năng thay nhau tăng giảm. Cơ năng là tổng của hai phần này nên vẫn giữ nguyên nếu không có ma sát hay lực cản.</p>
           <div style="padding:0 17px 17px">
             <div class="live-facts">
               <div class="fact"><span>Li độ x</span><strong id="xOut">+8,00 cm</strong></div>
@@ -353,8 +405,8 @@
     </section>
 
     <section aria-labelledby="theoryTitle">
-      <div class="theory-intro"><div><div class="eyebrow">Ghi nhớ kiến thức</div><h2 id="theoryTitle">2. LÝ THUYẾT CẦN NHỚ</h2><p>Các đại lượng trong dao động điều hòa — định nghĩa, đơn vị và mối liên hệ cần nhớ khi làm bài tập.</p></div></div>
-      <p class="tap-hint">Kiến thức, công thức, đơn vị và lưu ý được hiển thị ngay bên dưới mỗi đại lượng. Bấm “✦ Nâng cao” để mở phần kiến thức mở rộng.</p>
+      <div class="theory-intro"><div><div class="eyebrow">Ghi nhớ kiến thức</div><h2 id="theoryTitle">2. LÝ THUYẾT CẦN NHỚ</h2><p>Các đại lượng quan trọng, công thức và mẹo nhớ khi làm bài.</p></div></div>
+      <p class="tap-hint">Mỗi ô có giải thích ngắn gọn. Muốn biết thêm điều thú vị thì bấm “✦ Nâng cao” nha.</p>
       <div class="theory-grid">
         <details class="theory-card" open><summary><span class="term-symbol">A</span><span><b>Biên độ</b><small>Độ lệch lớn nhất</small></span></summary><p>Biên độ cho biết vật lệch xa vị trí cân bằng tối đa bao nhiêu. A luôn dương hoặc bằng 0.</p><div class="formula">A = |x| lớn nhất</div><div class="detail-extra"><b>Đơn vị:</b> m (SI), thường gặp cm.<br><b>Lưu ý:</b> đổi cm sang m trước khi tính năng lượng theo J. Ví dụ 8 cm = 0,08 m.</div></details>
         <details class="theory-card" open><summary><span class="term-symbol">x</span><span><b>Li độ</b><small>Vị trí so với cân bằng</small></span></summary><p>Li độ có dấu: x dương và âm nằm ở hai phía khác nhau của vị trí cân bằng.</p><div class="formula">x = A cos(ωt + φ₀)</div><div class="detail-extra"><b>Đơn vị:</b> m.<br><b>Lưu ý:</b> −A ≤ x ≤ A. Li độ không phải quãng đường vật đã đi.</div></details>
@@ -369,19 +421,47 @@
         <details class="theory-card" open><summary><span class="term-symbol">W</span><span><b>Cơ năng</b><small>Tổng năng lượng cơ học</small></span></summary><p>Trong dao động điều hòa lí tưởng, cơ năng được bảo toàn.</p><div class="formula">W = Wđ + Wt = ½kA²</div><div class="detail-extra"><b>Đơn vị:</b> jun (J).<br><b>Lưu ý:</b> nếu biên độ tăng gấp đôi thì cơ năng tăng gấp bốn lần vì W tỉ lệ với A².</div></details>
         <details class="theory-card" open><summary><span class="term-symbol">v, a</span><span><b>Vận tốc và gia tốc</b><small>Đại lượng liên quan</small></span></summary><p>Vận tốc cho biết tốc độ và chiều chuyển động. Gia tốc luôn hướng về vị trí cân bằng.</p><div class="formula">v = −ωA sin(ωt + φ₀)<br>a = −ω²A cos(ωt + φ₀) = −ω²x</div><div class="detail-extra"><b>Đơn vị:</b> v là m/s; a là m/s².<br><b>Lưu ý:</b> tại vị trí cân bằng, |v| cực đại và a = 0; tại hai biên, v = 0 và |a| cực đại, luôn hướng về vị trí cân bằng.</div></details>
       </div>
-      <section class="motion-guide" aria-labelledby="motionGuideTitle">
-        <div class="eyebrow">Sơ đồ đọc nhanh</div><h3 id="motionGuideTitle">Sơ đồ dao động điều hòa: x, v, a và A</h3>
-        <p class="motion-guide-intro">Quy ước chiều dương sang phải. Sơ đồ dưới đây giúp nhớ dấu của li độ, vận tốc và gia tốc tại các vị trí đặc biệt.</p>
-        <div class="motion-axis" role="img" aria-label="Trục dao động từ biên âm qua vị trí cân bằng đến biên dương">
-          <div class="axis-line"></div><div class="axis-point left"><b>−A</b><small>Biên âm</small><span>v = 0</span><span>a hướng phải</span></div>
-          <div class="axis-point center"><b>0</b><small>Cân bằng</small><span>|v| cực đại</span><span>a = 0</span></div>
-          <div class="axis-point right"><b>+A</b><small>Biên dương</small><span>v = 0</span><span>a hướng trái</span></div>
-          <div class="axis-arrow">Chiều dương →</div>
-        </div>
-        <div class="motion-rules"><div><b>Li độ x</b><p>Dấu cho biết phía của vị trí cân bằng; độ lớn |x| không vượt quá A.</p></div><div><b>Biên độ A</b><p>Luôn không âm; A là độ lớn li độ cực đại, không phải một vị trí có dấu.</p></div><div><b>Vận tốc v</b><p>Dấu cho biết chiều chuyển động. Cùng một x có thể có hai dấu v khác nhau.</p></div><div><b>Gia tốc a</b><p>Luôn ngược dấu với x vì a = −ω²x; gia tốc hướng về vị trí cân bằng.</p></div></div>
+      <section class="minus-sign-guide" id="minus-sign-guide" aria-labelledby="minusGuideTitle">
+        <div class="minus-guide-kicker">🎀 Mẹo làm bài dễ nhầm</div>
+        <h3 id="minusGuideTitle">Gặp dấu trừ trước A, v hoặc a thì làm sao?</h3>
+        <p class="minus-guide-intro">Nhìn thấy dấu trừ thì đừng vội xóa nha! Mỗi trường hợp có ý nghĩa khác nhau.</p>
+        <article class="minus-tip">
+          <h4>🎀 1. Phương trình li độ có dấu trừ trước biên độ</h4>
+          <div class="mini-formula">x = −4 cos(ωt + φ₀)</div>
+          <p>Biên độ theo quy ước vẫn là số không âm. Dùng công thức <b>−cos α = cos(α + π)</b> để chuyển dấu trừ thành phần lệch pha.</p>
+          <div class="mini-formula">x = 4 cos(ωt + φ₀ + π)</div>
+          <p><b>Kết luận:</b> A = 4; pha ban đầu mới là φ₀ + π (có thể quy về khoảng pha tương đương bằng cách cộng hoặc trừ 2π).</p>
+        </article>
+        <article class="minus-tip">
+          <h4>🎀 2. Phương trình vận tốc có dấu trừ</h4>
+          <div class="mini-formula">v = −ωA sin(ωt + φ₀)</div>
+          <p>Dấu trừ này đến từ việc lấy đạo hàm của phương trình li độ. <b>Đừng tự ý bỏ dấu trừ</b>, vì vận tốc có dấu cho biết chiều chuyển động.</p>
+          <div class="mini-formula">Tốc độ cực đại: vₘₐₓ = ωA</div>
+          <p>Vận tốc có thể dương, âm hoặc bằng 0; còn tốc độ là độ lớn của vận tốc nên không âm.</p>
+        </article>
+        <article class="minus-tip">
+          <h4>🎀 3. Phương trình gia tốc có dấu trừ</h4>
+          <div class="mini-formula">a = −ω²x = −ω²A cos(ωt + φ₀)</div>
+          <p>Dấu trừ cho biết gia tốc luôn hướng về vị trí cân bằng, tức là ngược dấu với li độ.</p>
+          <div class="mini-formula">Độ lớn gia tốc cực đại: aₘₐₓ = ω²A</div>
+          <p>Nếu x dương thì a âm; nếu x âm thì a dương. Tại vị trí cân bằng, a = 0.</p>
+        </article>
+        <div class="minus-guide-summary">💡 <b>Nhớ nhanh:</b> Biên độ A luôn không âm. Dấu trừ trước cos trong phương trình li độ có thể đổi thành lệch pha π; dấu trừ trong công thức v và a thể hiện chiều hoặc quan hệ pha nên không được xóa tùy tiện.</div>
       </section>
-      <div class="callout energy-special"><div class="callout-icon">★</div><div><strong>Điểm đặc biệt: năng lượng đổi dạng nhưng tổng không đổi</strong><p><b>Ở vị trí cân bằng:</b> x = 0, thế năng bằng 0 và động năng cực đại. <b>Ở hai biên:</b> x = ±A, vận tốc bằng 0, động năng bằng 0 và thế năng cực đại. <b>Ở mọi vị trí:</b> Wđ + Wt = W. Khi động năng tăng thì thế năng giảm đúng bằng phần tăng đó.</p><p class="energy-example">Ví dụ: nếu cơ năng là 10 J và động năng tại một thời điểm là 7 J thì thế năng lúc đó là 3 J.</p></div></div>
-
+      <section class="energy-map" aria-labelledby="energyMapTitle">
+        <div class="eyebrow">Sơ đồ hệ thống kiến thức</div>
+        <h3 id="energyMapTitle">🎀 Cơ năng, động năng và thế năng</h3>
+        <p class="energy-map-intro">Hiểu đơn giản: cơ năng là tổng của hai phần năng lượng. Vật chuyển động nhanh thì có động năng; vật ở vị trí cao hoặc lò xo bị biến dạng thì có thế năng.</p>
+        <div class="energy-root">
+          <div class="energy-node total"><b>CƠ NĂNG</b><strong>W = Wđ + Wt</strong><small>Được bảo toàn khi chỉ có lực bảo toàn tác dụng</small></div>
+          <div class="energy-branches"><span>↙</span><span>↘</span></div>
+          <div class="energy-children">
+            <article class="energy-node kinetic"><b>ĐỘNG NĂNG</b><strong>Wđ = ½mv²</strong><p>Phụ thuộc khối lượng m và vận tốc v.</p><small>Vật chuyển động càng nhanh thì động năng càng lớn.</small></article>
+            <article class="energy-node potential"><b>THẾ NĂNG</b><strong>Năng lượng do vị trí hoặc biến dạng</strong><div class="potential-types"><div><b>Thế năng trọng trường</b><strong>Wt = mgh</strong><small>Phụ thuộc độ cao h.</small></div><div><b>Thế năng đàn hồi</b><strong>Wt = ½kx²</strong><small>Phụ thuộc độ biến dạng của lò xo.</small></div></div></article>
+          </div>
+          <div class="energy-map-note">🎀 Ví dụ dễ nhớ: khi con lắc lò xo đi qua vị trí cân bằng, động năng lớn nhất và thế năng đàn hồi bằng 0. Ở hai biên thì ngược lại. Tổng hai phần vẫn bằng cơ năng W.</div>
+        </div>
+      </section>
 
       <div class="advanced-modal" id="advancedModal" role="dialog" aria-modal="true" aria-labelledby="advancedModalTitle">
         <div class="advanced-dialog">
@@ -469,13 +549,13 @@
       const w=rect.width,h=260,pad={l:43,r:12,t:17,b:34},pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
       ctx.clearRect(0,0,w,h);
       const p=params(), k=MASS*p.omega*p.omega, W=0.5*k*p.A*p.A;
-      const maxT=2*period(), maxY=Math.max(W,1e-9)*1.13;
+      const maxT=2*period(), WmJ=W*1000, maxY=Math.max(WmJ,0.01)*1.13;
       const gx=x=>pad.l+x*pw, gy=y=>pad.t+ph-(y/maxY)*ph;
       // Lưới nền
       ctx.lineWidth=1; ctx.strokeStyle='rgba(151,178,207,.12)'; ctx.fillStyle='#8da4bf'; ctx.font='10px system-ui';
       for(let i=0;i<=4;i++){
-        const y=W*i/4; ctx.beginPath();ctx.moveTo(pad.l,gy(y));ctx.lineTo(w-pad.r,gy(y));ctx.stroke();
-        ctx.fillText(`${fmt(y*1000,1)}`,4,gy(y)+3);
+        const y=WmJ*i/4; ctx.beginPath();ctx.moveTo(pad.l,gy(y));ctx.lineTo(w-pad.r,gy(y));ctx.stroke();
+        ctx.fillText(`${fmt(y,2)}`,4,gy(y)+3);
       }
       ctx.fillStyle='#8199b5';ctx.fillText('mJ',7,11);
       for(let i=0;i<=4;i++){
@@ -487,7 +567,7 @@
         const N=Math.max(180,Math.floor(pw));
         for(let i=0;i<=N;i++){
           const ratio=i/N, tt=ratio*maxT, phi=p.omega*tt+p.phi0;
-          let en=which==='kin'?W*Math.sin(phi)**2:which==='pot'?W*Math.cos(phi)**2:W;
+          let en=(which==='kin'?W*Math.sin(phi)**2:which==='pot'?W*Math.cos(phi)**2:W)*1000;
           const x=gx(ratio), y=gy(en);
           if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
         }
@@ -496,7 +576,7 @@
       curve('kin','#ff8db8',2.2);curve('pot','#b8a4ff',2.2);curve('total','#d5ff75',1.7);
       const ratio=((t%maxT)+maxT)%maxT/maxT, px=gx(ratio);
       ctx.setLineDash([4,4]);ctx.strokeStyle='rgba(238,245,255,.55)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(px,pad.t);ctx.lineTo(px,pad.t+ph);ctx.stroke();ctx.setLineDash([]);
-      const py=gy(data.Wk);ctx.beginPath();ctx.arc(px,py,4,0,2*Math.PI);ctx.fillStyle='#ff8db8';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.stroke();
+      const py=gy(data.Wk*1000);ctx.beginPath();ctx.arc(px,py,4,0,2*Math.PI);ctx.fillStyle='#ff8db8';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.stroke();
     }
     function update(){
       const p=params(), d=energyAt(t), T=period(), f=1/T;
